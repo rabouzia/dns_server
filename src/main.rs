@@ -14,8 +14,10 @@ fn main() {
         match udp_socket.recv_from(&mut buf) {
             Ok((size, source)) => {
                 println!("Received {} bytes from {}", size, source);
-                let response []= [];
-
+				let response= [
+                    0b00000100, 0b11010010, 0b10000000, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0x0c, b'c',
+                    b'o', b'd', b'e', b'c', b'r', b'a', b'f', b't', b'e', b'r', b's', 0x02, b'i',
+                    b'o', 0x00, 0, 1, 0, 1,];
                 udp_socket
                     .send_to(&response, source)
                     .expect("Failed to send response");
