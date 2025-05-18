@@ -1,6 +1,43 @@
 #[allow(unused_imports)]
 use std::net::UdpSocket;
 
+use bytes::{BufMut, BytesMut};
+
+pub struct DnsQuestion {
+    pub domain_name: Vec<u8>,
+    pub record_type: u16,
+    pub class: u16,
+}
+
+impl DnsQuestion
+{
+    pub fn new() -> Self
+    {
+        DnsQuestion
+        { 
+            domain_name: Self::encoded_domain_name("codecrafters.io"), 
+            record_type: 1, 
+            class: 1, 
+        }
+    }
+    pub fn encoded_domain_name(domain: &str) -> Vec<u8>
+    {
+        let mut encoded: Vec<u8> = Vec::new();
+
+        for part in domain.split('.')
+        {
+            if !part.is_empty()
+            {
+                encoded.push(part.len() as u8);
+                encoded.extend_from_slice(part.as_bytes());
+            }
+        }
+        encoded.push(0);
+        return encoded;
+    }
+}
+
+
 fn main()
 {
     println!("Logs from your program will appear here!");
